@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identifikasi Penyakit Tanaman Cabai - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <style>
+        body {
+            background-image: url('https://cvpradiptaparamita.com/wp-content/uploads/2023/01/609faf35be344.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center p-5 bg-teal-100 bg-opacity-50">
+    <nav class="w-full bg-teal-700 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-white text-2xl font-bold">Penyakit Cabai</a>
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-white hover:text-gray-300">Home</a></li>
+                <li><a href="about.html" class="text-white hover:text-gray-300">About</a></li>
+                <li><a href="contact.html" class="text-white hover:text-gray-300">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="text-4xl text-white mb-5 shadow-lg text-center">Identifikasi Penyakit Tanaman Cabai</h1>
+    
+    <div class="input-container flex flex-col items-center p-5 bg-white bg-opacity-80 rounded-lg shadow-lg w-full max-w-md">
+        <p class="mb-3">Pilih jenis analisis:</p>
+        <div class="flex space-x-4 mb-3">
+            <button onclick="window.location.href='analisisPenyakit.html'" class="p-3 bg-teal-700 text-white text-lg rounded hover:bg-teal-900 transition duration-300">Analisis Penyakit</button>
+            <button onclick="window.location.href='analisishama.html'" class="p-3 bg-teal-700 text-white text-lg rounded hover:bg-teal-900 transition duration-300">Analisis Hama</button>
+        </div>
+    </div>
+</body>
+</html>

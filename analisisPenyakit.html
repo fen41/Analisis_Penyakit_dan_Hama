@@ -1,0 +1,155 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Penyakit Tanaman Cabai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <style>
+        body {
+            background-image: url('https://cvpradiptaparamita.com/wp-content/uploads/2023/01/609faf35be344.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .loader {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center p-5 bg-teal-100 bg-opacity-50">
+    <nav class="w-full bg-teal-700 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-white text-2xl font-bold">Penyakit Cabai</a>
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-white hover:text-gray-300">Home</a></li>
+                <li><a href="about.html" class="text-white hover:text-gray-300">About</a></li>
+                <li><a href="contact.html" class="text-white hover:text-gray-300">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="text-4xl text-white mb-5 shadow-lg text-center">Analisis Penyakit Tanaman Cabai</h1>
+    
+    <div class="input-container flex flex-col items-center p-5 bg-white bg-opacity-80 rounded-lg shadow-lg w-full max-w-md">
+        <p class="mb-3">Masukkan gejala atau ciri-ciri penyakit tanaman cabai:</p>
+        <input type="text" id="gejalaInput" placeholder="Contoh: bercak hitam pada buah" class="p-3 w-full text-lg mb-3 rounded border border-teal-700 outline-none">
+        <button onclick="cariPenyakit()" class="p-3 bg-teal-700 text-white text-lg rounded hover:bg-teal-900 transition duration-300">Cari Penyakit</button>
+    </div>
+
+    <div class="loader-container flex justify-center items-center mt-5" id="loaderContainer" style="display:none;">
+        <div class="loader"></div>
+    </div>
+
+    <div class="result-container w-full max-w-2xl mt-5 p-5 bg-white bg-opacity-80 rounded-lg shadow-lg" id="resultContainer" style="display:none;">
+        <h3 class="text-2xl mb-3">Hasil Identifikasi:</h3>
+        <input type="text" id="searchPenyakit" placeholder="Cari penyakit..." class="p-3 w-full text-lg mb-3 rounded border border-teal-700 outline-none" onkeyup="filterPenyakit()">
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr>
+                        <th class="p-3 bg-teal-700 text-white">Nama Penyakit</th>
+                        <th class="p-3 bg-teal-700 text-white">Penyebab</th>
+                        <th class="p-3 bg-teal-700 text-white">Gejala</th>
+                        <th class="p-3 bg-teal-700 text-white">Solusi Pengendalian</th>
+                    </tr>
+                </thead>
+                <tbody id="hasilBody">
+                </tbody>
+            </table>
+        </div>
+        <p id="noResultMessage" class="text-red-700 font-bold mt-3" style="display:none;">Penyakit tidak ditemukan berdasarkan gejala yang diinput.</p>
+    </div>
+
+    <script>
+        const penyakitCabai = [
+            {
+                nama: "Anthracnose (Patek)",
+                penyebab: "Jamur Colletotrichum capsici",
+                gejala: "Bercak hitam melingkar pada buah yang cekung.",
+                solusi: "Gunakan fungisida berbahan mancozeb atau chlorothalonil."
+            },
+            {
+                nama: "Virus Mosaik",
+                penyebab: "Cucumber Mosaic Virus (CMV) atau Tobacco Mosaic Virus (TMV)",
+                gejala: "Daun keriting dengan warna belang hijau tua dan muda.",
+                solusi: "Kendalikan kutu daun, sanitasi lingkungan tanaman."
+            },
+            {
+                nama: "Layu Fusarium",
+                penyebab: "Jamur Fusarium oxysporum",
+                gejala: "Tanaman layu dan pangkal batang coklat.",
+                solusi: "Gunakan varietas tahan layu dan pengendalian kelembapan tanah."
+            },
+            {
+                nama: "Busuk Akar dan Pangkal Batang",
+                penyebab: "Jamur Phytophthora capsici",
+                gejala: "Pangkal batang menghitam dan membusuk, buah rontok sebelum matang.",
+                solusi: "Atur drainase tanah dan gunakan fungisida metalaksil."
+            },
+            {
+                nama: "Layu Bakteri",
+                penyebab: "Bakteri Ralstonia solanacearum",
+                gejala: "Daun layu tiba-tiba meskipun tanaman masih hijau segar.",
+                solusi: "Gunakan varietas tahan bakteri dan sanitasi lahan."
+            }
+        ];
+
+        function cariPenyakit() {
+            const gejalaInput = document.getElementById("gejalaInput").value.toLowerCase();
+            const hasilBody = document.getElementById("hasilBody");
+            const noResultMessage = document.getElementById("noResultMessage");
+            const resultContainer = document.getElementById("resultContainer");
+            const loaderContainer = document.getElementById("loaderContainer");
+            hasilBody.innerHTML = "";
+
+            loaderContainer.style.display = "flex";
+            resultContainer.style.display = "none";
+            noResultMessage.style.display = "none";
+
+            setTimeout(() => {
+                const hasilPenyakit = penyakitCabai.filter(penyakit => 
+                    penyakit.gejala.toLowerCase().includes(gejalaInput)
+                );
+
+                loaderContainer.style.display = "none";
+
+                if (hasilPenyakit.length > 0) {
+                    resultContainer.style.display = "block";
+                    noResultMessage.style.display = "none";
+                    hasilPenyakit.forEach(penyakit => {
+                        const row = `<tr>
+                            <td class="p-3 border">${penyakit.nama}</td>
+                            <td class="p-3 border">${penyakit.penyebab}</td>
+                            <td class="p-3 border">${penyakit.gejala}</td>
+                            <td class="p-3 border">${penyakit.solusi}</td>
+                        </tr>`;
+                        hasilBody.insertAdjacentHTML("beforeend", row);
+                    });
+                } else {
+                    resultContainer.style.display = "block";
+                    noResultMessage.style.display = "block";
+                }
+            }, 2000); // Simulate a 2-second loading time
+        }
+
+        function filterPenyakit() {
+            const searchInput = document.getElementById("searchPenyakit").value.toLowerCase();
+            const rows = document.querySelectorAll("#hasilBody tr");
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchInput));
+                row.style.display = match ? "" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
